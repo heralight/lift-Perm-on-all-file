@@ -2,17 +2,17 @@ package bootstrap.liftweb
 
 import net.liftweb._
 import util._
-import Helpers._
 
 import common._
 import http._
-import js.jquery.JQueryArtifacts
+import http.js.jquery.JQueryArtifacts
 import sitemap._
 import Loc._
 import mapper._
 
 import code.model._
 import net.liftmodules.JQueryModule
+import code.lib.ProxyGuard
 
 
 /**
@@ -41,10 +41,21 @@ class Boot {
     // where to search snippet
     LiftRules.addToPackages("code")
 
+    def IsLoggedIn() =
+      If(() => User.loggedIn_?,
+        Props.mode match {
+          case Props.RunModes.Development =>  DisplayError("You must be connected to access that resource.")
+          case _ => () => NotFoundResponse()
+        }
+      )
+
+     def DisplayError(message: String) = () =>
+      RedirectWithState("/", RedirectState(() => S.error(message)))
+
     // Build SiteMap
     def sitemap = SiteMap(
       Menu.i("Home") / "index" >> User.AddUserMenusAfter, // the simple way to declare a menu
-
+      Menu.i("Private") / "private" / ** >> Hidden >> IsLoggedIn ,
       // more complex because this menu allows anything in the
       // /static path to be visible
       Menu(Loc("Static", Link(List("static"), true, "/static/index"), 
@@ -61,11 +72,9 @@ class Boot {
     JQueryModule.InitParam.JQuery=JQueryModule.JQuery172
     JQueryModule.init()
 
-	 LiftRules.dispatch.append(PrivateGuard)
+	// LiftRules.dispatch.append(ProxyGuard)
+    ProxyGuard.register
 
-	// LiftRules.liftRequest.append {
-      //case Req("private" :: _, _, _) => true
-    //}
 
 	
 	
@@ -89,17 +98,5 @@ class Boot {
 
     // Make a transaction span the whole HTTP request
     S.addAround(DB.buildLoanWrapper)
-  }
-}
-
-import net.liftweb.http.rest._
-
-object PrivateGuard extends net.liftweb.http.rest.RestHelper with Loggable {
-  serve {
-
-    case "private" :: _ Get req if !User.loggedIn_?  =>{
-      logger.error("call private PARTTTTTTTT!!!!!")
-      NotFoundResponse()
-    }
   }
 }
