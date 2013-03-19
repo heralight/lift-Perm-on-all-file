@@ -13,6 +13,7 @@ import mapper._
 import code.model._
 import net.liftmodules.JQueryModule
 import code.lib.ProxyGuard
+import code.snippet.EmbedMD
 
 
 /**
@@ -75,7 +76,7 @@ class Boot {
 	// LiftRules.dispatch.append(ProxyGuard)
     ProxyGuard.register
 
-
+    EmbedMD.register
 	
 	
     //Show the spinny image when an Ajax call starts
