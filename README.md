@@ -7,6 +7,8 @@ used in index.html
 * Apply authentication and permission on a whole directory (ProxyGuard)
 demonstration with "private" directory
 
+* Mimetype -> Content-type map example in pure scala with default value (MimeTypes)
+
 ### Test project related to:
 <https://groups.google.com/d/msg/liftweb/J2cCwh7AjmI/N4Sd9MaRrWwJ>
 
