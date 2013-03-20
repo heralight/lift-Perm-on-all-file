@@ -36,6 +36,11 @@ object EmbedMD extends DispatchSnippet {
   }
   val suffixes = List("md","markdown")
 
+  /**
+   * Based on Lift Template.scala findRawTemplate
+   * @param path
+   * @return
+   */
    def findMarkdownTemplate(path : String) : Box[NodeSeq] = {
      val se = suffixes.iterator
      val sl = List("_" + locale.toString, "_" + locale.getLanguage, "")
