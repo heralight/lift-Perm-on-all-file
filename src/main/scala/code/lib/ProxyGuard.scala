@@ -37,11 +37,13 @@ object ProxyGuard extends Logger {
     LiftRules.dispatch.prepend(NamedPF("File Dispatch") {
       case r@Req("private" :: _, _, _) if canRender(r) && User.loggedIn_? => {
         val res = tryo {
-          val pls = r.path.partPath.mkString("/", "/", "." + r.path.suffix)
+          error("r:" + r.uri + " l: " + getLastSuffix(r))
+         // val pls = r.path.partPath.mkString("/", "/", "." + r.path.suffix)
+          val pls = r.uri
           //        error("p1:"+pls)
           //        error("p2:"+r.uri)
           LiftRules.loadResource(pls) match {
-            case Full(b) => FileResponse(b, Nil, 200, getMimeType(r.path.suffix))
+            case Full(b) => FileResponse(b, Nil, 200, getMimeType(getLastSuffix(r)))
             case _ => NotFoundResponse()
           }
         }
@@ -53,11 +55,16 @@ object ProxyGuard extends Logger {
       mimeTypes.get(suffix).getOrElse(defaultMimeType)
     }
 
+    def getLastSuffix(r : Req) : String = {
+      val last = r.path.wholePath.last
+      last.substring(last.lastIndexOf('.') +1)
+    }
+
     // filter, can be invert like all != "html"
-    def canRender(r: Req): Boolean = {
-      r.path.suffix match {
+    def canRender(r: Req):Boolean = {
+      getLastSuffix(r) match {
         case "css" => true
-        case "js" => true
+        case "js" =>true
         case _ => false
       }
     }
