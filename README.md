@@ -1,17 +1,27 @@
 lift-Perm-on-all-file
 =====================
-Under Apache 2.0 license
 
-Test project related to:
-https://groups.google.com/d/msg/liftweb/J2cCwh7AjmI/N4Sd9MaRrWwJ
+* Lift embed Markdown snippet (EmbedMD) implemenation based on hoisted project code :
+used in index.html
+
+* Apply authentication and permission on a whole directory (ProxyGuard)
+demonstration with "private" directory
+
+### Test project related to:
+<https://groups.google.com/d/msg/liftweb/J2cCwh7AjmI/N4Sd9MaRrWwJ>
+
+### License
+
+Under Apache 2.0 license
 
 mime.properties come from jetty project.
 
 Embed some code from
- _liftweb project
 
- _hoisted project license:
- https://github.com/hoisted/hoisted
+#### liftweb project
+
+#### hoisted project license:
+<https://github.com/hoisted/hoisted>
 
   /*
      * Copyright 2009 WorldWide Conferencing, LLC
@@ -31,4 +41,4 @@ Embed some code from
 
    _jetty license:
    Apache License, Version 2.0
-   http://jetty.codehaus.org/jetty/license.html
+   <http://jetty.codehaus.org/jetty/license.html>
